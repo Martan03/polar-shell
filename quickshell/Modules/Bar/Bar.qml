@@ -63,11 +63,20 @@ Scope {
                 Clock {}
             }
 
-            BarPill {
+            RowLayout {
+                spacing: 10
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
 
-                Volume {}
+                BarPill {
+                    Cpu {}
+                    Memory {}
+                    Gpu {}
+                }
+
+                BarPill {
+                    Volume {}
+                }
             }
         }
     }

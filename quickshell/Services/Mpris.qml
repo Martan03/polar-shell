@@ -50,7 +50,7 @@ Singleton {
     }
 
     readonly property bool hasMedia: active !== null
-    readonly property bool isPlaying: active?.isPlaying
+    readonly property bool isPlaying: active?.isPlaying ?? false
 
     readonly property string title: active?.trackTitle ?? ""
     readonly property string artist: active?.trackArtist ?? ""

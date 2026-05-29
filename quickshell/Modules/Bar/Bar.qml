@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Layouts
 import Quickshell
 import Quickshell.Hyprland
 
@@ -36,16 +37,23 @@ Scope {
                 left: 5
             }
 
-            BarPill {
-                horMargin: 8
-                verMargin: 5
-
+            RowLayout {
+                spacing: 10
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
 
-                Workspaces {
-                    screen: barWindow.modelData
-                    hyprMonitor: Hyprland.monitorFor(barWindow.modelData)
+                BarPill {
+                    horMargin: 8
+                    verMargin: 5
+
+                    Workspaces {
+                        screen: barWindow.modelData
+                        hyprMonitor: Hyprland.monitorFor(barWindow.modelData)
+                    }
+                }
+
+                BarPill {
+                    Media {}
                 }
             }
 

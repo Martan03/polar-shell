@@ -1,4 +1,5 @@
 singleton Audio 1.0 Audio.qml
 singleton GecolColors 1.0 GecolColors.qml
+singleton Mpris 1.0 Mpris.qml
 singleton Theme 1.0 Theme.qml
 singleton Time 1.0 Time.qml

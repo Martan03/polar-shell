@@ -23,7 +23,6 @@ Item {
         NerdIcon {
             visible: Audio.micMuted
             icon: Audio.micIcon
-            size: 17
             Layout.leftMargin: 3
         }
     }

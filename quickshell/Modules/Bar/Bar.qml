@@ -27,11 +27,22 @@ Scope {
             }
 
             implicitHeight: 30
+            margins {
+                right: 5
+                left: 5
+            }
 
             BarPill {
                 anchors.centerIn: parent
 
                 Clock {}
+            }
+
+            BarPill {
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+
+                Volume {}
             }
         }
     }

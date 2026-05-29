@@ -1,5 +1,3 @@
-import QtQuick
-
 import "../../../Services"
 import "../../../Widgets"
 

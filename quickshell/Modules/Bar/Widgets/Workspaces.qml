@@ -123,6 +123,26 @@ Item {
                     }
                 }
 
+                HoverHandler {
+                    id: hover
+                }
+
+                Rectangle {
+                    anchors.fill: parent
+                    radius: 10
+                    color: {
+                        if (hover.hovered && !modelData.active) {
+                            return Theme.border;
+                        }
+                        return "transparent";
+                    }
+                    Behavior on color {
+                        ColorAnimation {
+                            duration: 100
+                        }
+                    }
+                }
+
                 StyledText {
                     anchors.centerIn: parent
                     text: modelData.id

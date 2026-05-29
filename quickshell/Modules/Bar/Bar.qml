@@ -35,6 +35,7 @@ Scope {
             margins {
                 right: 5
                 left: 5
+                top: 3
             }
 
             RowLayout {
@@ -53,6 +54,7 @@ Scope {
                 }
 
                 BarPill {
+                    interactive: true
                     Media {}
                 }
             }
@@ -75,6 +77,7 @@ Scope {
                 }
 
                 BarPill {
+                    interactive: true
                     Volume {}
                 }
             }

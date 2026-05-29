@@ -6,15 +6,21 @@ import "../../Services"
 Item {
     id: pillRoot
 
+    property bool interactive: false
+
     property int horMargin: 30
     property int verMargin: 10
-
     property int spacing: 10
 
     implicitWidth: contentRow.implicitWidth + horMargin
     implicitHeight: 26
 
     default property alias content: contentRow.data
+
+    HoverHandler {
+        id: hover
+        enabled: pillRoot.interactive
+    }
 
     Rectangle {
         id: borderRect
@@ -39,8 +45,19 @@ Item {
 
     Rectangle {
         anchors.fill: parent
-        color: Theme.surface
         radius: height / 2
+
+        color: {
+            if (pillRoot.interactive && hover.hovered) {
+                return Theme.border;
+            }
+            return Theme.surface;
+        }
+        Behavior on color {
+            ColorAnimation {
+                duration: 100
+            }
+        }
     }
 
     Row {

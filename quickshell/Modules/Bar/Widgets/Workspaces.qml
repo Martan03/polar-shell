@@ -17,7 +17,7 @@ Item {
 
     readonly property var persistentIds: monitorDefaults[screen.name] || []
 
-    property var _updateTrigger: [hyprMonitor ? hyprMonitor.activeWorkspace : null, Hyprland.workspaces.length]
+    property var _updateTrigger: [hyprMonitor ? hyprMonitor.activeWorkspace : null, Hyprland.workspaces]
     property var workspaceModel: {
         let trigger = _updateTrigger;
         let list = [];
@@ -25,18 +25,14 @@ Item {
             return list;
 
         let activeId = hyprMonitor.activeWorkspace ? hyprMonitor.activeWorkspace.id : -1;
-
         let added = new Set();
 
-        for (let i = 0; i < persistentIds.length; i++) {
-            let wid = persistentIds[i];
-
+        for (const wid of persistentIds) {
             let exists = false;
-
             let isActive = (wid === activeId);
 
-            for (let j = 0; j < Hyprland.workspaces.length; j++) {
-                let w = Hyprland.workspaces[j];
+            for (let i = 0; i < Hyprland.workspaces.length; i++) {
+                const w = Hyprland.workspaces[i];
                 if (w.id === wid) {
                     exists = true;
                     break;
@@ -52,9 +48,8 @@ Item {
         }
 
         for (let i = 0; i < Hyprland.workspaces.length; i++) {
-            let w = Hyprland.workspaces[i];
-
-            if (w.monitor && w.monitor.id === hyprMonitor.id && !added.has(w.id)) {
+            const w = Hyprland.workspaces[i];
+            if (w.monitor && w.monitor.name === hyprMonitor.name && w.id > 0 && !added.has(w.id)) {
                 list.push({
                     id: w.id,
                     exists: true,
@@ -62,6 +57,15 @@ Item {
                 });
                 added.add(w.id);
             }
+        }
+
+        if (activeId > 0 && !added.has(activeId)) {
+            list.push({
+                id: activeId,
+                exists: true,
+                active: true
+            });
+            added.add(activeId);
         }
 
         list.sort((a, b) => a.id - b.id);

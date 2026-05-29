@@ -6,8 +6,13 @@ import "../../Services"
 Item {
     id: pillRoot
 
-    implicitWidth: contentRow.implicitWidth + 30
-    implicitHeight: contentRow.implicitHeight + 10
+    property int horMargin: 30
+    property int verMargin: 10
+
+    property int spacing: 10
+
+    implicitWidth: contentRow.implicitWidth + horMargin
+    implicitHeight: 26
 
     default property alias content: contentRow.data
 
@@ -19,8 +24,8 @@ Item {
         anchors.fill: parent
         anchors.topMargin: -1
         anchors.bottomMargin: 1
-        anchors.leftMargin: 1
-        anchors.rightMargin: 1
+        anchors.leftMargin: 0.5
+        anchors.rightMargin: 0.5
 
         layer.enabled: true
         layer.effect: MultiEffect {
@@ -42,9 +47,9 @@ Item {
         id: contentRow
 
         anchors.left: parent.left
-        anchors.leftMargin: 15
+        anchors.leftMargin: pillRoot.horMargin / 2
         anchors.verticalCenter: parent.verticalCenter
-        spacing: 10
+        spacing: pillRoot.spacing
 
         onChildrenChanged: {
             for (let i = 0; i < children.length; i++) {

@@ -1,5 +1,6 @@
 import QtQuick
 import Quickshell
+import Quickshell.Hyprland
 
 import "Widgets"
 
@@ -15,6 +16,8 @@ Scope {
         model: Quickshell.screens
 
         PanelWindow {
+            id: barWindow
+
             required property var modelData
             screen: modelData
 
@@ -27,9 +30,23 @@ Scope {
             }
 
             implicitHeight: 30
+
             margins {
                 right: 5
                 left: 5
+            }
+
+            BarPill {
+                horMargin: 8
+                verMargin: 5
+
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+
+                Workspaces {
+                    screen: barWindow.modelData
+                    hyprMonitor: Hyprland.monitorFor(barWindow.modelData)
+                }
             }
 
             BarPill {

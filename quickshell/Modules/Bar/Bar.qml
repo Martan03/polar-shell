@@ -79,6 +79,7 @@ Scope {
                 BarPill {
                     interactive: true
                     Volume {}
+                    SystemTray {}
                 }
             }
         }

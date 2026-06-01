@@ -7,12 +7,13 @@ Item {
     id: pillRoot
 
     property bool interactive: false
+    signal clicked
 
-    property int horMargin: 30
-    property int verMargin: 10
+    property int leftMargin: 15
+    property int rightMargin: 15
     property int spacing: 10
 
-    implicitWidth: contentRow.implicitWidth + horMargin
+    implicitWidth: contentRow.implicitWidth + leftMargin + rightMargin
     implicitHeight: 26
 
     default property alias content: contentRow.data
@@ -20,6 +21,12 @@ Item {
     HoverHandler {
         id: hover
         enabled: pillRoot.interactive
+        cursorShape: Qt.PointingHandCursor
+    }
+
+    TapHandler {
+        enabled: pillRoot.interactive
+        onTapped: pillRoot.clicked()
     }
 
     Rectangle {
@@ -64,7 +71,7 @@ Item {
         id: contentRow
 
         anchors.left: parent.left
-        anchors.leftMargin: pillRoot.horMargin / 2
+        anchors.leftMargin: pillRoot.leftMargin
         anchors.verticalCenter: parent.verticalCenter
         spacing: pillRoot.spacing
 

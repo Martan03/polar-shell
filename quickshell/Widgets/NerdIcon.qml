@@ -7,6 +7,7 @@ Item {
 
     property string icon: ""
     property int size: 13
+    property color color: Theme.primary
 
     width: iconText.implicitWidth
     height: iconText.implicitHeight
@@ -15,7 +16,7 @@ Item {
         id: iconText
         anchors.centerIn: parent
         text: parent.icon
-        color: Theme.primary
+        color: parent.color
 
         font.pixelSize: parent.size
         font.family: Theme.font

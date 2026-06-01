@@ -6,6 +6,7 @@ QtObject {
     readonly property int fontSize: 13
 
     readonly property color primary: GecolColors.primary
+    readonly property color primaryHover: GecolColors.primaryHover
     readonly property color secondary: GecolColors.secondary
 
     readonly property color background: GecolColors.background

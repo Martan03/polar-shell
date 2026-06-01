@@ -55,6 +55,13 @@ Singleton {
     readonly property string title: active?.trackTitle ?? ""
     readonly property string artist: active?.trackArtist ?? ""
 
+    readonly property string artUrl: active?.trackArtUrl ?? ""
+
+    readonly property real length: active?.length ?? 0
+    readonly property real pos: active?.position ?? 0
+
+    readonly property real volume: active?.volume ?? 0
+
     readonly property string displayString: {
         if (!hasMedia)
             return "";
@@ -65,5 +72,5 @@ Singleton {
         return "Unknown Media";
     }
 
-    readonly property string icon: isPlaying ? "" : ""
+    readonly property string icon: isPlaying ? "" : ""
 }

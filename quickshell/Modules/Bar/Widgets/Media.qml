@@ -9,33 +9,38 @@ Item {
     implicitWidth: contentLayout.implicitWidth
     implicitHeight: contentLayout.implicitHeight
 
-    MouseArea {
-        anchors.fill: parent
-        cursorShape: Qt.PointingHandCursor
-        acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
-
-        onClicked: mouse => {
-            const player = Mpris.active;
-            if (!player)
-                return;
-
-            if (mouse.button === Qt.LeftButton) {
-                player.togglePlaying();
-            } else if (mouse.button === Qt.MiddleButton && player.canGoPrevious) {
-                player.previous();
-            } else if (mouse.button === Qt.RightButton) {
-                player.next();
-            }
-        }
-    }
-
     RowLayout {
         id: contentLayout
         spacing: 10
 
-        NerdIcon {
-            icon: Mpris.icon
-            size: 13
+        Rectangle {
+            implicitWidth: 18
+            implicitHeight: 18
+            radius: 9
+
+            color: hover.hovered ? Theme.primaryHover : Theme.primary
+            Behavior on color {
+                ColorAnimation {
+                    duration: 100
+                }
+            }
+
+            NerdIcon {
+                anchors.centerIn: parent
+                icon: Mpris.icon
+                color: Theme.border
+                size: 10
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: Mpris.active?.togglePlaying()
+            }
+
+            HoverHandler {
+                id: hover
+            }
         }
 
         StyledText {

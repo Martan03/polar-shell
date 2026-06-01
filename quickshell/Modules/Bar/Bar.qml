@@ -4,6 +4,8 @@ import Quickshell
 import Quickshell.Hyprland
 
 import "Widgets"
+import "../../Services"
+import ".."
 
 Scope {
     id: bar
@@ -44,8 +46,8 @@ Scope {
                 anchors.verticalCenter: parent.verticalCenter
 
                 BarPill {
-                    horMargin: 8
-                    verMargin: 5
+                    leftMargin: 4
+                    rightMargin: 4
 
                     Workspaces {
                         screen: barWindow.modelData
@@ -54,8 +56,29 @@ Scope {
                 }
 
                 BarPill {
+                    id: mediaPill
                     interactive: true
-                    Media {}
+                    leftMargin: 6
+                    onClicked: mediaPopup.visible = !mediaPopup.visible
+
+                    MediaPopup {
+                        id: mediaPopup
+                        visible: false
+                        anchor.item: mediaPill
+                    }
+
+                    Media {
+                        TapHandler {
+                            acceptedButtons: Qt.RightButton
+                            cursorShape: Qt.PointingHandCursor
+                            onTapped: Mpris.active?.next()
+                        }
+
+                        TapHandler {
+                            acceptedButtons: Qt.MiddleButton
+                            onTapped: Mpris.active?.previous()
+                        }
+                    }
                 }
             }
 

@@ -3,6 +3,7 @@ import QtQuick
 
 QtObject {
     readonly property color primary: "#e8814d"
+    readonly property color primaryHover: "#94502e"
     readonly property color secondary: "#ce950e"
 
     readonly property color background: "#181514"

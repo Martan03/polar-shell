@@ -6,6 +6,7 @@ import Quickshell.Hyprland
 import "Widgets"
 import "../../Services"
 import ".."
+import "../ControlCenter"
 
 Scope {
     id: bar
@@ -100,7 +101,16 @@ Scope {
                 }
 
                 BarPill {
+                    id: trayPill
                     interactive: true
+                    onClicked: controlCenter.visible = !controlCenter.visible
+
+                    ControlCenter {
+                        id: controlCenter
+                        visible: false
+                        anchor.item: trayPill
+                    }
+
                     Volume {}
                     SystemTray {}
                 }

@@ -39,4 +39,19 @@ Singleton {
     readonly property bool micMuted: source?.audio?.muted ?? false
 
     readonly property string micIcon: micMuted ? "󰍭" : "󰍬"
+
+    function setVolume(value) {
+        if (sink && sink.audio) {
+            Audio.sink.audio.volume = value;
+            if (Audio.muted && value > 0) {
+                Audio.sink.audio.muted = false;
+            }
+        }
+    }
+
+    function setMute() {
+        if (sink && sink.audio) {
+            sink.audio.muted = !sink.audio.muted;
+        }
+    }
 }

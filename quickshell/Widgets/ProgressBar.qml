@@ -39,7 +39,11 @@ Item {
 
     Timer {
         interval: 500
-        running: root.player && root.previewRatio < 0 && root.committedRatio < 0
+        running: {
+            if (!root.Window.window)
+                return false;
+            return root.Window.window.visible && root.player && root.previewRatio < 0 && root.committedRatio < 0;
+        }
         repeat: true
         onTriggered: root.player.positionChanged()
     }

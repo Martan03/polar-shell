@@ -1,200 +1,165 @@
 import QtQuick
 import QtQuick.Layouts
-import Quickshell
 import Quickshell.Widgets
-import Quickshell.Hyprland
 import "../Services"
 import "../Widgets"
 
-PopupWindow {
+Popup {
     id: root
 
-    anchor.edges: Qt.LeftEdge
-    anchor.rect.y: 30
-    color: "transparent"
-
     implicitWidth: 350
-    implicitHeight: 140
+    implicitHeight: content.implicitHeight + 30
 
-    HyprlandFocusGrab {
-        id: focusGrab
-        windows: [root]
-        onCleared: {
-            root.visible = false;
+    RowLayout {
+        id: content
+
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.margins: 15
+
+        spacing: 15
+
+        ClippingRectangle {
+            implicitWidth: 110
+            implicitHeight: 110
+            radius: 10
+            color: Theme.border
+
+            Image {
+                anchors.fill: parent
+                source: MprisCtl.artUrl
+                fillMode: Image.PreserveAspectCrop
+                mipmap: true
+            }
         }
-    }
 
-    onVisibleChanged: {
-        if (visible) {
-            Qt.callLater(() => {
-                focusGrab.active = true;
-            });
-        } else {
-            focusGrab.active = false;
-        }
-    }
+        ColumnLayout {
+            Layout.fillWidth: true
+            spacing: 5
 
-    Shortcut {
-        sequence: "Escape"
-        onActivated: root.visible = false
-    }
-
-    Rectangle {
-        id: surface
-
-        anchors.fill: parent
-        color: Theme.surface
-        radius: 16
-
-        border.color: Theme.primary
-        border.width: 1
-
-        RowLayout {
-            anchors.fill: parent
-            anchors.margins: 15
-            spacing: 15
-
-            ClippingRectangle {
-                implicitWidth: 110
-                implicitHeight: 110
-                radius: 10
-                color: Theme.border
-
-                Image {
-                    anchors.fill: parent
-                    source: MprisCtl.artUrl
-                    fillMode: Image.PreserveAspectCrop
-                    mipmap: true
-                }
+            StyledText {
+                text: MprisCtl.active?.identity ?? ""
+                color: Theme.primary
+                font.pixelSize: 11
+                font.bold: true
+                font.capitalization: Font.SmallCaps
+                Layout.fillWidth: true
             }
 
             ColumnLayout {
-                Layout.fillWidth: true
-                spacing: 5
+                spacing: 2
 
                 StyledText {
-                    text: MprisCtl.active?.identity ?? ""
-                    color: Theme.primary
-                    font.pixelSize: 11
+                    text: MprisCtl.title
                     font.bold: true
-                    font.capitalization: Font.SmallCaps
+                    elide: Text.ElideRight
+                    Layout.fillWidth: true
+                }
+                StyledText {
+                    text: MprisCtl.artist
+                    color: Theme.muted
+                    font.pixelSize: 12
+                    elide: Text.ElideRight
+                    Layout.fillWidth: true
+                }
+            }
+
+            ProgressBar {
+                Layout.fillWidth: true
+                Layout.topMargin: 5
+                player: MprisCtl.active
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.topMargin: 5
+                spacing: 3
+
+                IconButton {
+                    icon: "󰒮"
+                    onClicked: MprisCtl.active?.previous()
+                    iconOffsetX: -1
+                }
+
+                IconButton {
+                    icon: MprisCtl.icon
+                    iconSize: 13
+                    onClicked: MprisCtl.active?.togglePlaying()
+                    bg: Theme.primary
+                    hoverBg: Theme.primaryHover
+                    iconColor: Theme.border
+                }
+
+                IconButton {
+                    icon: "󰒭"
+                    onClicked: MprisCtl.active?.next()
+                }
+
+                Item {
                     Layout.fillWidth: true
                 }
 
-                ColumnLayout {
-                    spacing: 2
+                Item {
+                    Layout.alignment: Qt.AlignRight
+                    implicitWidth: volRow.implicitWidth
+                    implicitHeight: volRow.implicitHeight
 
-                    StyledText {
-                        text: MprisCtl.title
-                        font.bold: true
-                        elide: Text.ElideRight
-                        Layout.fillWidth: true
-                    }
-                    StyledText {
-                        text: MprisCtl.artist
-                        color: Theme.muted
-                        font.pixelSize: 12
-                        elide: Text.ElideRight
-                        Layout.fillWidth: true
-                    }
-                }
+                    MouseArea {
+                        anchors.fill: parent
+                        acceptedButtons: Qt.NoButton
 
-                ProgressBar {
-                    Layout.fillWidth: true
-                    Layout.topMargin: 5
-                    player: MprisCtl.active
-                }
+                        onWheel: wheel => {
+                            if (!MprisCtl.active)
+                                return;
 
-                RowLayout {
-                    Layout.fillWidth: true
-                    Layout.topMargin: 5
-                    spacing: 3
-
-                    IconButton {
-                        icon: "󰒮"
-                        onClicked: MprisCtl.active?.previous()
-                        iconOffsetX: -1
+                            let step = 0.05;
+                            if (wheel.angleDelta.y > 0) {
+                                MprisCtl.active.volume = Math.min(1.0, MprisCtl.volume + step);
+                            } else if (wheel.angleDelta.y < 0) {
+                                MprisCtl.active.volume = Math.max(0.0, MprisCtl.volume - step);
+                            }
+                        }
                     }
 
-                    IconButton {
-                        icon: MprisCtl.icon
-                        iconSize: 13
-                        onClicked: MprisCtl.active?.togglePlaying()
-                        bg: Theme.primary
-                        hoverBg: Theme.primaryHover
-                        iconColor: Theme.border
-                    }
+                    RowLayout {
+                        id: volRow
+                        spacing: 0
 
-                    IconButton {
-                        icon: "󰒭"
-                        onClicked: MprisCtl.active?.next()
-                    }
+                        IconButton {
+                            icon: {
+                                if (MprisCtl.volume == 0.0)
+                                    return "󰝟";
+                                if (MprisCtl.volume > 0.6)
+                                    return "";
+                                if (MprisCtl.volume > 0.3)
+                                    return "";
+                                return "";
+                            }
+                            iconSize: 14
 
-                    Item {
-                        Layout.fillWidth: true
-                    }
+                            property real savedVolume: 1.0
 
-                    Item {
-                        Layout.alignment: Qt.AlignRight
-                        implicitWidth: volRow.implicitWidth
-                        implicitHeight: volRow.implicitHeight
-
-                        MouseArea {
-                            anchors.fill: parent
-                            acceptedButtons: Qt.NoButton
-
-                            onWheel: wheel => {
+                            onClicked: {
                                 if (!MprisCtl.active)
                                     return;
 
-                                let step = 0.05;
-                                if (wheel.angleDelta.y > 0) {
-                                    MprisCtl.active.volume = Math.min(1.0, MprisCtl.volume + step);
-                                } else if (wheel.angleDelta.y < 0) {
-                                    MprisCtl.active.volume = Math.max(0.0, MprisCtl.volume - step);
+                                if (MprisCtl.volume > 0) {
+                                    savedVolume = MprisCtl.volume;
+                                    MprisCtl.active.volume = 0;
+                                } else {
+                                    MprisCtl.active.volume = savedVolume;
                                 }
                             }
                         }
 
-                        RowLayout {
-                            id: volRow
-                            spacing: 0
+                        StyledText {
+                            text: Math.round(MprisCtl.volume * 100) + "%"
+                            color: Theme.muted
+                            font.pixelSize: 11
 
-                            IconButton {
-                                icon: {
-                                    if (MprisCtl.volume == 0.0)
-                                        return "󰝟";
-                                    if (MprisCtl.volume > 0.6)
-                                        return "";
-                                    if (MprisCtl.volume > 0.3)
-                                        return "";
-                                    return "";
-                                }
-                                iconSize: 14
-
-                                property real savedVolume: 1.0
-
-                                onClicked: {
-                                    if (!MprisCtl.active)
-                                        return;
-
-                                    if (MprisCtl.volume > 0) {
-                                        savedVolume = MprisCtl.volume;
-                                        MprisCtl.active.volume = 0;
-                                    } else {
-                                        MprisCtl.active.volume = savedVolume;
-                                    }
-                                }
-                            }
-
-                            StyledText {
-                                text: Math.round(MprisCtl.volume * 100) + "%"
-                                color: Theme.muted
-                                font.pixelSize: 11
-
-                                Layout.preferredWidth: 25
-                                horizontalAlignment: Text.AlignRight
-                            }
+                            Layout.preferredWidth: 25
+                            horizontalAlignment: Text.AlignRight
                         }
                     }
                 }

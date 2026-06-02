@@ -27,7 +27,7 @@ Item {
 
             NerdIcon {
                 anchors.centerIn: parent
-                icon: Mpris.icon
+                icon: MprisCtl.icon
                 color: Theme.border
                 size: 10
             }
@@ -35,7 +35,7 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
-                onClicked: Mpris.active?.togglePlaying()
+                onClicked: MprisCtl.active?.togglePlaying()
             }
 
             HoverHandler {
@@ -44,7 +44,7 @@ Item {
         }
 
         StyledText {
-            text: Mpris.displayString
+            text: MprisCtl.displayString
 
             Layout.maximumWidth: 300
             elide: Text.ElideRight

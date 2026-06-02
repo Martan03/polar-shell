@@ -71,12 +71,12 @@ Scope {
                         TapHandler {
                             acceptedButtons: Qt.RightButton
                             cursorShape: Qt.PointingHandCursor
-                            onTapped: Mpris.active?.next()
+                            onTapped: MprisCtl.active?.next()
                         }
 
                         TapHandler {
                             acceptedButtons: Qt.MiddleButton
-                            onTapped: Mpris.active?.previous()
+                            onTapped: MprisCtl.active?.previous()
                         }
                     }
                 }

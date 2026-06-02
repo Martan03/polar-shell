@@ -14,7 +14,7 @@ PopupWindow {
     color: "transparent"
 
     implicitWidth: 350
-    implicitHeight: 130
+    implicitHeight: 140
 
     HyprlandFocusGrab {
         id: focusGrab
@@ -55,14 +55,14 @@ PopupWindow {
             spacing: 15
 
             ClippingRectangle {
-                implicitWidth: 100
-                implicitHeight: 100
+                implicitWidth: 110
+                implicitHeight: 110
                 radius: 10
                 color: Theme.border
 
                 Image {
                     anchors.fill: parent
-                    source: Mpris.artUrl
+                    source: MprisCtl.artUrl
                     fillMode: Image.PreserveAspectCrop
                     mipmap: true
                 }
@@ -73,7 +73,7 @@ PopupWindow {
                 spacing: 5
 
                 StyledText {
-                    text: Mpris.active?.identity ?? ""
+                    text: MprisCtl.active?.identity ?? ""
                     color: Theme.primary
                     font.pixelSize: 11
                     font.bold: true
@@ -85,13 +85,13 @@ PopupWindow {
                     spacing: 2
 
                     StyledText {
-                        text: Mpris.title
+                        text: MprisCtl.title
                         font.bold: true
                         elide: Text.ElideRight
                         Layout.fillWidth: true
                     }
                     StyledText {
-                        text: Mpris.artist
+                        text: MprisCtl.artist
                         color: Theme.muted
                         font.pixelSize: 12
                         elide: Text.ElideRight
@@ -99,65 +99,10 @@ PopupWindow {
                     }
                 }
 
-                Rectangle {
-                    id: progress
+                ProgressBar {
                     Layout.fillWidth: true
                     Layout.topMargin: 5
-                    implicitHeight: 4
-                    radius: 2
-                    color: Theme.border
-
-                    property real visualVal: (Mpris.active && Mpris.length > 0) ? (Mpris.pos / Mpris.length) : 0
-
-                    Timer {
-                        interval: 500
-                        running: Mpris.isPlaying && !seekArea.pressed
-                        repeat: true
-                        onTriggered: Mpris.active?.positionChanged()
-                    }
-
-                    Rectangle {
-                        id: activeFill
-                        width: parent.width * progress.visualVal
-                        height: parent.height
-                        radius: 2
-                        color: Theme.primary
-
-                        // Behavior on width {
-                        //     enabled: !seekArea.pressed
-                        //     NumberAnimation {
-                        //         duration: 500
-                        //         easing.type: Easing.Linear
-                        //     }
-                        // }
-                    }
-
-                    MouseArea {
-                        id: seekArea
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-
-                        onPressed: mouse => {
-                            progress.visualVal = Math.max(0, Math.min(1, mouse.x / width));
-                        }
-
-                        onPositionChanged: mouse => {
-                            if (pressed) {
-                                progress.visualVal = Math.max(0, Math.min(1, mouse.x / width));
-                            }
-                        }
-
-                        onReleased: mouse => {
-                            if (!Mpris.active || Mpris.length <= 0)
-                                return;
-
-                            let finalPercent = Math.max(0, Math.min(1, mouse.x / width));
-                            let newPos = finalPercent * Mpris.length;
-
-                            Mpris.active.position = newPos;
-                            Mpris.active.positionChanged();
-                        }
-                    }
+                    player: MprisCtl.active
                 }
 
                 RowLayout {
@@ -167,14 +112,14 @@ PopupWindow {
 
                     IconButton {
                         icon: "󰒮"
-                        onClicked: Mpris.active?.previous()
+                        onClicked: MprisCtl.active?.previous()
                         iconOffsetX: -1
                     }
 
                     IconButton {
-                        icon: Mpris.icon
+                        icon: MprisCtl.icon
                         iconSize: 13
-                        onClicked: Mpris.active?.togglePlaying()
+                        onClicked: MprisCtl.active?.togglePlaying()
                         bg: Theme.primary
                         hoverBg: Theme.primaryHover
                         iconColor: Theme.border
@@ -182,7 +127,7 @@ PopupWindow {
 
                     IconButton {
                         icon: "󰒭"
-                        onClicked: Mpris.active?.next()
+                        onClicked: MprisCtl.active?.next()
                     }
 
                     Item {
@@ -199,14 +144,14 @@ PopupWindow {
                             acceptedButtons: Qt.NoButton
 
                             onWheel: wheel => {
-                                if (!Mpris.active)
+                                if (!MprisCtl.active)
                                     return;
 
                                 let step = 0.05;
                                 if (wheel.angleDelta.y > 0) {
-                                    Mpris.active.volume = Math.min(1.0, Mpris.volume + step);
+                                    MprisCtl.active.volume = Math.min(1.0, MprisCtl.volume + step);
                                 } else if (wheel.angleDelta.y < 0) {
-                                    Mpris.active.volume = Math.max(0.0, Mpris.volume - step);
+                                    MprisCtl.active.volume = Math.max(0.0, MprisCtl.volume - step);
                                 }
                             }
                         }
@@ -217,11 +162,11 @@ PopupWindow {
 
                             IconButton {
                                 icon: {
-                                    if (Mpris.volume == 0.0)
+                                    if (MprisCtl.volume == 0.0)
                                         return "󰝟";
-                                    if (Mpris.volume > 0.6)
+                                    if (MprisCtl.volume > 0.6)
                                         return "";
-                                    if (Mpris.volume > 0.3)
+                                    if (MprisCtl.volume > 0.3)
                                         return "";
                                     return "";
                                 }
@@ -230,20 +175,20 @@ PopupWindow {
                                 property real savedVolume: 1.0
 
                                 onClicked: {
-                                    if (!Mpris.active)
+                                    if (!MprisCtl.active)
                                         return;
 
-                                    if (Mpris.volume > 0) {
-                                        savedVolume = Mpris.volume;
-                                        Mpris.active.volume = 0;
+                                    if (MprisCtl.volume > 0) {
+                                        savedVolume = MprisCtl.volume;
+                                        MprisCtl.active.volume = 0;
                                     } else {
-                                        Mpris.active.volume = savedVolume;
+                                        MprisCtl.active.volume = savedVolume;
                                     }
                                 }
                             }
 
                             StyledText {
-                                text: Math.round(Mpris.volume * 100) + "%"
+                                text: Math.round(MprisCtl.volume * 100) + "%"
                                 color: Theme.muted
                                 font.pixelSize: 11
 

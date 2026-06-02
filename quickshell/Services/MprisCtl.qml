@@ -8,6 +8,11 @@ Singleton {
 
     readonly property list<MprisPlayer> players: Mpris.players.values
     property MprisPlayer active: null
+    property real activeStableLen: 0
+
+    onActiveChanged: {
+        activeStableLen = getStableLen(active);
+    }
 
     onPlayersChanged: _resolveActive()
     Component.onCompleted: _resolveActive()
@@ -24,6 +29,38 @@ Singleton {
         }
     }
 
+    Timer {
+        interval: 1000
+        running: root.active?.playbackState === MprisPlaybackState.Playing
+        repeat: true
+        onTriggered: root.active?.positionChanged()
+    }
+
+    Connections {
+        target: root.active
+
+        function onTrackTitleChanged() {
+            root.activeStableLen = root.getStableLen(root.active);
+            if (root.isIdle(root.active))
+                root._resolveActive();
+        }
+
+        function onTrackArtistChanged() {
+            if (root.isIdle(root.active))
+                root._resolveActive();
+        }
+
+        function onLengthChanged() {
+            if (root.active && root.active.lengthSupported && root.active.length > 1)
+                root.activeStableLen = root.active.length;
+        }
+
+        function onPlaybackStateChanged() {
+            if (root.isIdle(root.active))
+                root._resolveActive();
+        }
+    }
+
     function _resolveActive() {
         let playing = players.find(p => p.isPlaying && !isFirefoxHover(p));
         if (playing) {
@@ -36,6 +73,14 @@ Singleton {
         }
 
         active = players.find(p => !isFirefoxHover(p)) ?? null;
+    }
+
+    function getStableLen(player) {
+        return (player && player.lengthSupported && player.length > 1) ? player.length : 0;
+    }
+
+    function isIdle(player) {
+        return player && player.isPlaying && !player.trackTitle && !player.trackArtist;
     }
 
     function isFirefoxHover(player) {

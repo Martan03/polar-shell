@@ -3,7 +3,6 @@ import QtQuick.Layouts
 import Quickshell
 import "../../Services"
 import "../../Widgets"
-import "Components"
 import "Widgets"
 
 Popup {
@@ -65,20 +64,8 @@ Popup {
                 Layout.fillWidth: true
             }
 
-            // ToggleButton {
-            //     icon: "󰤨"
-            //     label: "Wi-Fi"
-            //     sublabel: "MyWifiName"
-            //     Layout.fillWidth: true
-            //     active: true
-            //     onClicked: active = !active
-            // }
-
-            ToggleButton {
-                icon: "󰂯"
-                label: "Bluetooth"
+            Bluetooth {
                 Layout.fillWidth: true
-                active: false
             }
         }
 

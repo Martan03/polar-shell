@@ -1,4 +1,5 @@
 singleton Audio 1.0 Audio.qml
+singleton Bluetooth 1.0 Bluetooth.qml
 singleton GecolColors 1.0 GecolColors.qml
 singleton GlobalState 1.0 GlobalState.qml
 singleton MprisCtl 1.0 MprisCtl.qml

@@ -61,14 +61,18 @@ Popup {
             Layout.fillWidth: true
             spacing: 15
 
-            ToggleButton {
-                icon: "󰤨"
-                label: "Wi-Fi"
-                sublabel: "MyWifiName"
+            Connection {
                 Layout.fillWidth: true
-                active: true
-                onClicked: active = !active
             }
+
+            // ToggleButton {
+            //     icon: "󰤨"
+            //     label: "Wi-Fi"
+            //     sublabel: "MyWifiName"
+            //     Layout.fillWidth: true
+            //     active: true
+            //     onClicked: active = !active
+            // }
 
             ToggleButton {
                 icon: "󰂯"
@@ -90,27 +94,6 @@ Popup {
                 Layout.fillWidth: true
                 backend: "external"
                 device: "1"
-            }
-        }
-
-        // TODO: make it actually work :)
-        RowLayout {
-            Layout.fillWidth: true
-            spacing: 10
-
-            Repeater {
-                model: ["", "󰍃", "󰜉", "󰐥"]
-                Rectangle {
-                    Layout.fillWidth: true
-                    implicitHeight: 40
-                    radius: 8
-                    color: Theme.border
-                    StyledText {
-                        anchors.centerIn: parent
-                        text: modelData
-                        font.pixelSize: 18
-                    }
-                }
             }
         }
     }

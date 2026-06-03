@@ -2,6 +2,7 @@ singleton Audio 1.0 Audio.qml
 singleton GecolColors 1.0 GecolColors.qml
 singleton GlobalState 1.0 GlobalState.qml
 singleton MprisCtl 1.0 MprisCtl.qml
+singleton Network 1.0 Network.qml
 singleton SystemMonitor 1.0 SystemMonitor.qml
 singleton Theme 1.0 Theme.qml
 singleton Time 1.0 Time.qml

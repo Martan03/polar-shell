@@ -101,5 +101,12 @@ Item {
                 }
             }
         }
+
+        StyledText {
+            text: Math.round(root.value * 100) + "%"
+            Layout.preferredWidth: 30
+            horizontalAlignment: Text.AlignRight
+            color: Theme.muted
+        }
     }
 }

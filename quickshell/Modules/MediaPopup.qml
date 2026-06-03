@@ -21,8 +21,9 @@ Popup {
         spacing: 15
 
         ClippingRectangle {
-            implicitWidth: 110
-            implicitHeight: 110
+            Layout.fillHeight: true
+            Layout.preferredWidth: height
+
             radius: 10
             color: Theme.border
 

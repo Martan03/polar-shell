@@ -33,7 +33,7 @@ Rectangle {
         NerdIcon {
             icon: root.icon
             size: root.iconSize
-            color: root.active ? Theme.border : Theme.primary
+            color: root.active ? Theme.surface : Theme.primary
             Layout.alignment: Qt.AlignVCenter
         }
 

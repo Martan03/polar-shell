@@ -86,6 +86,16 @@ Popup {
             AudioList {
                 Layout.fillWidth: true
             }
+
+            VolumeSlider {
+                Layout.fillWidth: true
+                type: "source"
+            }
+
+            AudioList {
+                Layout.fillWidth: true
+                type: "source"
+            }
         }
     }
 }

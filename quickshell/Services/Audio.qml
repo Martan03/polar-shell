@@ -41,17 +41,33 @@ Singleton {
     readonly property string micIcon: micMuted ? "󰍭" : "󰍬"
 
     function setVolume(value) {
-        if (sink && sink.audio) {
-            Audio.sink.audio.volume = value;
-            if (Audio.muted && value > 0) {
-                Audio.sink.audio.muted = false;
+        _setVolume(sink, value);
+    }
+
+    function setMicVolume(value) {
+        _setVolume(source, value);
+    }
+
+    function setMute() {
+        _setMute(sink);
+    }
+
+    function setMicMute() {
+        _setMute(source);
+    }
+
+    function _setVolume(device, value) {
+        if (device && device.audio) {
+            device.audio.volume = value;
+            if (device.audio.muted && value > 0) {
+                device.audio.muted = false;
             }
         }
     }
 
-    function setMute() {
-        if (sink && sink.audio) {
-            sink.audio.muted = !sink.audio.muted;
+    function _setMute(device) {
+        if (device && device.audio) {
+            device.audio.muted = !device.audio.muted;
         }
     }
 }

@@ -5,9 +5,23 @@ import "../../../Services"
 ControlSlider {
     id: root
 
-    icon: Audio.icon
-    value: Audio.volume
+    property string type: "sink"
 
-    onValChanged: val => Audio.setVolume(val)
-    onIconClicked: Audio.setMute()
+    icon: type === "sink" ? Audio.icon : Audio.micIcon
+    value: type === "sink" ? Audio.volume : Audio.micVolume
+
+    onValChanged: val => {
+        if (type === "sink") {
+            Audio.setVolume(val);
+        } else {
+            Audio.setMicVolume(val);
+        }
+    }
+    onIconClicked: {
+        if (type === "sink") {
+            Audio.setMute();
+        } else {
+            Audio.setMicMute();
+        }
+    }
 }

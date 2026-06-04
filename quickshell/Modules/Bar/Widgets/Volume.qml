@@ -10,18 +10,18 @@ Item {
     implicitWidth: contentRow.implicitWidth
     implicitHeight: contentRow.implicitHeight
 
-    Process {
-        id: pavuControlLauncher
-        command: ["pavucontrol"]
-    }
+    // Process {
+    //     id: pavuControlLauncher
+    //     command: ["pavucontrol"]
+    // }
 
-    MouseArea {
-        anchors.fill: parent
-        cursorShape: Qt.PointingHandCursor
-        onClicked: {
-            pavuControlLauncher.running = true;
-        }
-    }
+    // MouseArea {
+    //     anchors.fill: parent
+    //     cursorShape: Qt.PointingHandCursor
+    //     onClicked: {
+    //         pavuControlLauncher.running = true;
+    //     }
+    // }
 
     RowLayout {
         id: contentRow

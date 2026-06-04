@@ -73,6 +73,7 @@ Popup {
             spacing: 15
 
             DoNotDisturb {}
+            VpnToggle {}
         }
 
         ColumnLayout {
@@ -100,9 +101,11 @@ Popup {
         if (visible) {
             Mako.register();
             Network.register();
+            Vpn.register();
         } else {
             Mako.unregister();
             Network.register();
+            Vpn.register();
         }
     }
 }

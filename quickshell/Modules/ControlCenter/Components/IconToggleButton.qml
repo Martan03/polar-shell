@@ -1,5 +1,5 @@
 import QtQuick
-import QtQuick.Layouts
+import QtQuick.Controls
 import "../../../Services"
 import "../../../Widgets"
 
@@ -8,8 +8,10 @@ Rectangle {
 
     property bool active: false
     required property string icon
-    property real iconSize: 20
 
+    property string tooltipText: ""
+
+    property real iconSize: 20
     property real size: 60
 
     signal clicked
@@ -33,8 +35,14 @@ Rectangle {
     }
 
     MouseArea {
+        id: mouseArea
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
+        hoverEnabled: true
         onClicked: root.clicked()
     }
+
+    ToolTip.visible: tooltipText !== "" && mouseArea.containsMouse
+    ToolTip.text: root.tooltipText
+    ToolTip.delay: 500
 }

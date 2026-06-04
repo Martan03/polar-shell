@@ -79,20 +79,11 @@ Popup {
                 device: "1"
             }
 
-            VolumeSlider {
+            Audio {
                 Layout.fillWidth: true
             }
 
-            AudioList {
-                Layout.fillWidth: true
-            }
-
-            VolumeSlider {
-                Layout.fillWidth: true
-                type: "source"
-            }
-
-            AudioList {
+            Audio {
                 Layout.fillWidth: true
                 type: "source"
             }

@@ -21,6 +21,7 @@ Item {
 
     signal valChanged(real value)
     signal iconClicked
+    signal rightClicked
 
     implicitHeight: Math.max(barHeight + 8, iconButtonSize)
 
@@ -88,15 +89,22 @@ Item {
                 id: mouseArea
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
+                acceptedButtons: Qt.LeftButton | Qt.RightButton
                 hoverEnabled: true
 
                 function updateValue(x) {
                     root.valChanged(Math.max(0, Math.min(1, x / width)));
                 }
 
-                onPressed: mouse => updateValue(mouse.x)
+                onPressed: mouse => {
+                    if (mouse.button === Qt.LeftButton) {
+                        updateValue(mouse.x);
+                    } else if (mouse.button === Qt.RightButton) {
+                        root.rightClicked();
+                    }
+                }
                 onPositionChanged: mouse => {
-                    if (pressed)
+                    if (pressed && (mouse.buttons & Qt.LeftButton))
                         updateValue(mouse.x);
                 }
             }

@@ -73,14 +73,18 @@ Popup {
             Layout.fillWidth: true
             spacing: 15
 
-            VolumeSlider {
-                Layout.fillWidth: true
-            }
-
             BrightnessSlider {
                 Layout.fillWidth: true
                 backend: "external"
                 device: "1"
+            }
+
+            VolumeSlider {
+                Layout.fillWidth: true
+            }
+
+            AudioList {
+                Layout.fillWidth: true
             }
         }
     }

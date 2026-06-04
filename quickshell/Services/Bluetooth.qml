@@ -2,12 +2,14 @@ pragma Singleton
 import QtQuick
 import Quickshell.Io
 
-Item {
+SmartPoller {
     id: root
 
     property bool hasDevice: false
     property bool isEnabled: false
     property string connectedName: ""
+
+    onPollAction: pollProcess.running = true
 
     function toggle() {
         if (!hasDevice)
@@ -18,7 +20,6 @@ Item {
 
         toggleProcess.command = ["bluetoothctl", "power", state];
         toggleProcess.running = true;
-        pollTimer.restart();
     }
 
     function handlePoll(output) {
@@ -66,7 +67,7 @@ Item {
                 const output = this.text.trim();
                 if (output === "CMD_MISSING") {
                     root.hasDevice = false;
-                    pollTimer.running = false;
+                    root.timerEnabled = false;
                     return;
                 }
 
@@ -77,14 +78,7 @@ Item {
 
     Process {
         id: toggleProcess
-    }
-
-    Timer {
-        id: pollTimer
-        interval: 3000
-        repeat: true
-        running: true
-        onTriggered: pollProcess.running = true
+        onExited: pollProcess.running = true
     }
 
     Component.onCompleted: pollProcess.running = true

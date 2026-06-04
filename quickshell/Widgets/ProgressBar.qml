@@ -38,7 +38,7 @@ Item {
     }
 
     Timer {
-        interval: 500
+        interval: 1000
         running: {
             if (!root.Window.window)
                 return false;
@@ -88,7 +88,7 @@ Item {
         Behavior on width {
             enabled: root.previewRatio < 0 && root.committedRatio < 0
             NumberAnimation {
-                duration: 500
+                duration: 1000
                 easing.type: Easing.Linear
             }
         }

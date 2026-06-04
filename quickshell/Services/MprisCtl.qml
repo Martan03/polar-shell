@@ -29,13 +29,6 @@ Singleton {
         }
     }
 
-    Timer {
-        interval: 1000
-        running: root.active?.playbackState === MprisPlaybackState.Playing
-        repeat: true
-        onTriggered: root.active?.positionChanged()
-    }
-
     Connections {
         target: root.active
 

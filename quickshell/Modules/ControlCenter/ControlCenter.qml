@@ -42,7 +42,6 @@ Popup {
             StyledText {
                 Layout.fillWidth: true
                 text: Quickshell.env("USER")
-                // font.bold: true
                 font.pixelSize: 15
             }
 
@@ -60,13 +59,20 @@ Popup {
             Layout.fillWidth: true
             spacing: 15
 
-            Connection {
+            NetworkToggle {
                 Layout.fillWidth: true
             }
 
-            Bluetooth {
+            BluetoothToggle {
                 Layout.fillWidth: true
             }
+        }
+
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: 15
+
+            DoNotDisturb {}
         }
 
         ColumnLayout {
@@ -79,14 +85,24 @@ Popup {
                 device: "1"
             }
 
-            Audio {
+            AudioWidget {
                 Layout.fillWidth: true
             }
 
-            Audio {
+            AudioWidget {
                 Layout.fillWidth: true
                 type: "source"
             }
+        }
+    }
+
+    onVisibleChanged: {
+        if (visible) {
+            Mako.register();
+            Network.register();
+        } else {
+            Mako.unregister();
+            Network.register();
         }
     }
 }

@@ -2,13 +2,15 @@ pragma Singleton
 import QtQuick
 import Quickshell.Io
 
-Item {
+SmartPoller {
     id: root
 
     property string activeType: "none"
     property string activeName: "Disconnected"
     property bool isWifiEnabled: false
     property bool hasWifiDevice: false
+
+    onPollAction: pollProcess.running = true
 
     function toggleWifi() {
         if (!hasWifiDevice)
@@ -19,7 +21,6 @@ Item {
 
         toggleProcess.command = ["nmcli", "radio", "wifi", state];
         toggleProcess.running = true;
-        pollTimer.restart();
     }
 
     Process {
@@ -66,14 +67,7 @@ Item {
 
     Process {
         id: toggleProcess
-    }
-
-    Timer {
-        id: pollTimer
-        interval: 3000
-        repeat: true
-        running: true
-        onTriggered: pollProcess.running = true
+        onExited: pollProcess.running = true
     }
 
     Component.onCompleted: pollProcess.running = true

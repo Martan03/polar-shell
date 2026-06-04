@@ -28,7 +28,7 @@ ColumnLayout {
             Layout.fillWidth: true
 
             radius: 8
-            color: isCurrent ? Theme.primary : (mouseArea.containsMouse ? Theme.surface : "transparent")
+            color: isCurrent ? Theme.primary : (mouseArea.containsMouse ? Theme.border : "transparent")
 
             RowLayout {
                 anchors.fill: parent

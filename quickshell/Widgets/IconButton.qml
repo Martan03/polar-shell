@@ -12,7 +12,7 @@ Rectangle {
     property int iconOffsetX: 0
     property int iconOffsetY: 0
 
-    property color bg: Theme.surface
+    property color bg: Qt.rgba(Theme.border.r, Theme.border.g, Theme.border.b, 0)
     property color hoverBg: Theme.border
 
     signal clicked

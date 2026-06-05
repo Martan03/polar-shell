@@ -9,7 +9,7 @@ Popup {
     id: root
 
     anchorEdges: Qt.RightEdge | Qt.BottomEdge
-    implicitWidth: 400
+    implicitWidth: 325
     implicitHeight: content.implicitHeight + 40
 
     ColumnLayout {
@@ -59,13 +59,9 @@ Popup {
             Layout.fillWidth: true
             spacing: 15
 
-            NetworkToggle {
-                Layout.fillWidth: true
-            }
+            NetworkToggle {}
 
-            BluetoothToggle {
-                Layout.fillWidth: true
-            }
+            BluetoothToggle {}
         }
 
         RowLayout {
@@ -74,6 +70,7 @@ Popup {
 
             DoNotDisturb {}
             VpnToggle {}
+            CaptureToggle {}
         }
 
         ColumnLayout {

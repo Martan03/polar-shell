@@ -16,6 +16,7 @@ Rectangle {
     signal clicked
 
     implicitHeight: 60
+    implicitWidth: 135
     radius: 12
 
     color: active ? Theme.primary : Theme.border

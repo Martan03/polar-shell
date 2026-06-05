@@ -83,7 +83,14 @@ Scope {
                 }
             }
 
+            CaptureIndicator {
+                anchors.right: centerPill.left
+                anchors.rightMargin: 10
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
             BarPill {
+                id: centerPill
                 anchors.centerIn: parent
 
                 Clock {}

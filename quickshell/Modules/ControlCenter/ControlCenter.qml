@@ -71,6 +71,9 @@ Popup {
             DoNotDisturb {}
             VpnToggle {}
             CaptureToggle {}
+            ColorPicker {
+                onRequestHide: root.visible = false
+            }
         }
 
         ColumnLayout {

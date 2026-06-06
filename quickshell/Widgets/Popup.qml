@@ -42,7 +42,7 @@ PopupWindow {
         id: surface
 
         anchors.fill: parent
-        color: Qt.rgba(Theme.surface.r, Theme.surface.g, Theme.surface.b, 0.5)
+        color: Qt.rgba(Theme.surface.r, Theme.surface.g, Theme.surface.b, 0.6)
         radius: 16
 
         border.color: Theme.primary

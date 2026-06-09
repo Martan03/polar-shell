@@ -1,6 +1,7 @@
 singleton Audio 1.0 Audio.qml
 singleton Bluetooth 1.0 Bluetooth.qml
 singleton Capture 1.0 Capture.qml
+singleton Config 1.0 Config.qml
 singleton GecolColors 1.0 GecolColors.qml
 singleton GlobalState 1.0 GlobalState.qml
 singleton Mako 1.0 Mako.qml

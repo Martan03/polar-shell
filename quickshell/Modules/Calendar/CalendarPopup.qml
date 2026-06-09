@@ -16,6 +16,11 @@ Popup {
         anchors.margins: 20
         spacing: 20
 
-        Calendar {}
+        Weather {
+            Layout.fillWidth: true
+        }
+        Calendar {
+            Layout.fillWidth: true
+        }
     }
 }

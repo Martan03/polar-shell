@@ -7,7 +7,6 @@ import "../../../Services"
 Item {
     id: root
 
-    implicitWidth: 320
     implicitHeight: content.implicitHeight
 
     property date currentDate: new Date()

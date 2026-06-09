@@ -7,6 +7,7 @@ import "Widgets"
 import "../../Services"
 import ".."
 import "../ControlCenter"
+import "../Calendar"
 
 Scope {
     id: bar
@@ -92,6 +93,15 @@ Scope {
             BarPill {
                 id: centerPill
                 anchors.centerIn: parent
+                interactive: true
+                onClicked: calendarPopup.visible = !calendarPopup.visible
+
+                CalendarPopup {
+                    id: calendarPopup
+                    visible: false
+                    anchor.item: centerPill
+                    anchor.rect.x: (centerPill.width - width) / 2
+                }
 
                 Clock {}
             }

@@ -36,7 +36,7 @@ def parse_output(output):
         title = parts[9]
         calendar = parts[12]
 
-        is_main = calendar == PRIMARY_CALENDAR
+        is_main = calendar == PRIMARY_CALENDAR or "@gmail.com" not in calendar
 
         if not start_time or start_time == "00:00:00":
             display_time = "All Day"
@@ -49,7 +49,12 @@ def parse_output(output):
             events[start_date_val] = []
 
         events[start_date_val].append(
-            {"time": display_time, "title": title, "isMain": is_main}
+            {
+                "time": display_time,
+                "title": title,
+                "isMain": is_main,
+                "calendar": calendar,
+            }
         )
     return events
 

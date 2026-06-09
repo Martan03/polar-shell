@@ -56,6 +56,12 @@ Item {
         return d1.getDate() === d2.getDate() && d1.getMonth() === d2.getMonth() && d1.getFullYear() === d2.getFullYear();
     }
 
+    function hasEvents(d) {
+        const key = formatKeyDate(d);
+        const events = eventsDb[key] || [];
+        return events.some(event => root.showShared || event.isMain);
+    }
+
     function getDaysInView() {
         let year = viewDate.getFullYear();
         let month = viewDate.getMonth();
@@ -170,7 +176,7 @@ Item {
                 Rectangle {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    Layout.preferredHeight: 32
+                    Layout.preferredHeight: width
                     radius: 8
 
                     color: {
@@ -192,6 +198,17 @@ Item {
                                 return Theme.muted;
                             return Theme.foreground;
                         }
+                    }
+
+                    Rectangle {
+                        visible: root.hasEvents(modelData.date)
+                        width: 4
+                        height: 4
+                        radius: 2
+                        color: root.isSameDate(modelData.date, root.selectedDate) ? Theme.surface : Theme.primary
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: 3
+                        anchors.horizontalCenter: parent.horizontalCenter
                     }
 
                     MouseArea {
@@ -246,15 +263,30 @@ Item {
 
                     StyledText {
                         Layout.preferredWidth: 105
+                        Layout.alignment: Qt.AlignTop
                         text: modelData.time
                         color: Theme.primary
                         font.bold: true
                     }
 
-                    StyledText {
+                    ColumnLayout {
                         Layout.fillWidth: true
-                        text: modelData.title
-                        elide: Text.ElideRight
+                        spacing: 2
+
+                        StyledText {
+                            Layout.fillWidth: true
+                            text: modelData.title
+                            elide: Text.ElideRight
+                        }
+
+                        StyledText {
+                            Layout.fillWidth: true
+                            visible: !modelData.isMain
+                            text: modelData.calendar || "Shared Event"
+                            color: Theme.muted
+                            font.pixelSize: 10
+                            elide: Text.ElideRight
+                        }
                     }
                 }
             }

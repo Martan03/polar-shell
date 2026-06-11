@@ -5,7 +5,7 @@ import "../../Widgets"
 Popup {
     id: root
 
-    implicitWidth: 350
+    implicitWidth: 400
     implicitHeight: content.implicitHeight + 40
 
     ColumnLayout {

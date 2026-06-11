@@ -7,53 +7,62 @@ SmartPoller {
     property string currentTemp: "--"
     property string currentIcon: "󰖐"
     property string currentDesc: "Loading..."
+    property string currentFeelsLike: "--"
+    property string currentWind: "--"
+
     property var hourlyForecast: []
     property bool isFetching: false
 
-    property var activeXhr: null
+    property int retryCount: 0
+    property int maxRetries: 3
 
     pollInterval: 1800000
-    onPollAction: fetchWeather()
+    onPollAction: {
+        retryCount = 0;
+        fetchWeather();
+    }
 
     function fetchWeather() {
         if (root.isFetching)
             return;
         root.isFetching = true;
 
-        root.activeXhr = new XMLHttpRequest();
-        var url = `https://api.open-meteo.com/v1/forecast?latitude=${Config.weatherLat}&longitude=${Config.weatherLon}&current=temperature_2m,weather_code&hourly=temperature_2m,precipitation_probability,weather_code&timezone=${Config.weatherTz}&forecast_days=2`;
+        var xhr = new XMLHttpRequest();
+        var url = `https://api.open-meteo.com/v1/forecast?latitude=${Config.weatherLat}&longitude=${Config.weatherLon}&current=temperature_2m,apparent_temperature,wind_speed_10m,weather_code&hourly=temperature_2m,precipitation_probability,precipitation,weather_code&timezone=${Config.weatherTz}&forecast_days=2`;
 
-        root.activeXhr.open("GET", url);
-        root.activeXhr.onreadystatechange = () => {
-            if (!root.activeXhr || root.activeXhr.readyState !== XMLHttpRequest.DONE)
+        xhr.open("GET", url);
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState !== XMLHttpRequest.DONE)
                 return;
 
             root.isFetching = false;
-            if (root.activeXhr.status === 0) {
-                console.warn("Weather fetch failed (Code 0), retrying later.");
-                root.activeXhr = null;
-                retryTimer.start();
+            if (xhr.status !== 200) {
+                if (root.retryCount < root.maxRetries) {
+                    root.retryCount++;
+                    console.warn(`Weather fetch failed (Status: ${xhr.status}). Retrying...`);
+                    retryTimer.start();
+                } else {
+                    console.error("Max weather retries reached.");
+                    root.currentDesc = "Offline";
+                }
                 return;
             }
 
-            if (root.activeXhr.status !== 200) {
-                console.error("Failed to fetch weather:", root.activeXhr.status);
-                root.activeXhr = null;
-                return;
-            }
-
+            root.retryCount = 0;
             try {
-                parseWeatherData(JSON.parse(root.activeXhr.responseText));
+                parseWeatherData(JSON.parse(xhr.responseText));
             } catch (e) {
                 console.error("Weather parsing error:", e);
             }
-            root.activeXhr = null;
         };
-        root.activeXhr.send();
+        xhr.send();
     }
 
     function parseWeatherData(data) {
         root.currentTemp = Math.round(data.current.temperature_2m) + "°C";
+        root.currentFeelsLike = Math.round(data.current.apparent_temperature) + "°C";
+        root.currentWind = Math.round(data.current.wind_speed_10m) + " km/h";
+
         let curWmo = mapWmoCode(data.current.weather_code);
         root.currentIcon = curWmo.icon;
         root.currentDesc = curWmo.desc;
@@ -83,8 +92,9 @@ SmartPoller {
 
             forecast.push({
                 time: i === 0 ? "Now" : timeStr,
-                temp: Math.round(data.hourly.temperature_2m[id]) + "°",
+                temp: data.hourly.temperature_2m[id],
                 precip: precip > 0 ? precip + "%" : "",
+                precipMm: data.hourly.precipitation[id],
                 icon: wmo.icon
             });
         }

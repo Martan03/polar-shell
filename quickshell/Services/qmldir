@@ -11,5 +11,6 @@ singleton SystemMonitor 1.0 SystemMonitor.qml
 singleton Theme 1.0 Theme.qml
 singleton Time 1.0 Time.qml
 singleton Vpn 1.0 Vpn.qml
+singleton Weather 1.0 Weather.qml
 
 SmartPoller 1.0 SmartPoller.qml

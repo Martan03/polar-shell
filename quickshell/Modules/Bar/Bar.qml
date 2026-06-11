@@ -8,6 +8,7 @@ import "../../Services"
 import ".."
 import "../ControlCenter"
 import "../Calendar"
+import "../Weather"
 
 Scope {
     id: bar
@@ -85,25 +86,47 @@ Scope {
             }
 
             CaptureIndicator {
-                anchors.right: centerPill.left
+                anchors.right: centerWidgets.left
                 anchors.rightMargin: 10
                 anchors.verticalCenter: parent.verticalCenter
             }
 
-            BarPill {
-                id: centerPill
-                anchors.centerIn: parent
-                interactive: true
-                onClicked: calendarPopup.visible = !calendarPopup.visible
+            RowLayout {
+                id: centerWidgets
 
-                CalendarPopup {
-                    id: calendarPopup
-                    visible: false
-                    anchor.item: centerPill
-                    anchor.rect.x: (centerPill.width - width) / 2
+                spacing: 10
+                anchors.centerIn: parent
+
+                BarPill {
+                    id: weatherPill
+                    interactive: true
+                    onClicked: weatherPopup.visible = !weatherPopup.visible
+                    // visible: Weather.currentTemp !== "--"
+
+                    WeatherPopup {
+                        id: weatherPopup
+                        visible: false
+                        anchor.item: weatherPill
+                        anchor.rect.x: (weatherPill.width - width) / 2
+                    }
+
+                    WeatherWidget {}
                 }
 
-                Clock {}
+                BarPill {
+                    id: centerPill
+                    interactive: true
+                    onClicked: calendarPopup.visible = !calendarPopup.visible
+
+                    CalendarPopup {
+                        id: calendarPopup
+                        visible: false
+                        anchor.item: centerPill
+                        anchor.rect.x: (centerPill.width - width) / 2
+                    }
+
+                    Clock {}
+                }
             }
 
             RowLayout {

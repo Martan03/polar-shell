@@ -1,17 +1,9 @@
 import QtQuick
-import QtQuick.Layouts
 import "../../../Services"
-import "../../../Widgets"
+import "../Components"
 
-RowLayout {
-    spacing: 5
+IconItem {
+    icon: "󰢮"
+    text: SystemMonitor.gpu + "%"
     visible: SystemMonitor.gpu >= 0
-
-    NerdIcon {
-        icon: "󰢮"
-        size: 18
-    }
-    StyledText {
-        text: SystemMonitor.gpu + "%"
-    }
 }

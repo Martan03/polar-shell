@@ -15,7 +15,7 @@ Popup {
         anchors.margins: 20
         spacing: 20
 
-        CalendarView {
+        WeatherView {
             Layout.fillWidth: true
         }
     }

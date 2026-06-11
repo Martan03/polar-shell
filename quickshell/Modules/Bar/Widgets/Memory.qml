@@ -1,15 +1,9 @@
 import QtQuick
 import "../../../Services"
-import "../../../Widgets"
+import "../Components"
 
-Row {
-    spacing: 5
+IconItem {
+    icon: " "
+    text: SystemMonitor.mem + "%"
     visible: SystemMonitor.mem >= 0
-
-    NerdIcon {
-        icon: " "
-    }
-    StyledText {
-        text: SystemMonitor.mem + "%"
-    }
 }

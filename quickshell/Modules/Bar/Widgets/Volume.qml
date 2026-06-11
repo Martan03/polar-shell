@@ -1,6 +1,5 @@
 import QtQuick
 import QtQuick.Layouts
-import Quickshell.Io
 import "../../../Services"
 import "../../../Widgets"
 
@@ -9,19 +8,6 @@ Item {
 
     implicitWidth: contentRow.implicitWidth
     implicitHeight: contentRow.implicitHeight
-
-    // Process {
-    //     id: pavuControlLauncher
-    //     command: ["pavucontrol"]
-    // }
-
-    // MouseArea {
-    //     anchors.fill: parent
-    //     cursorShape: Qt.PointingHandCursor
-    //     onClicked: {
-    //         pavuControlLauncher.running = true;
-    //     }
-    // }
 
     RowLayout {
         id: contentRow

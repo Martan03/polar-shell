@@ -1,41 +1,55 @@
+pragma Singleton
 import QtQuick
-import QtQuick.Layouts
-import "../../../Widgets"
-import "../../../Services"
 
-Item {
+SmartPoller {
     id: root
-
-    implicitHeight: content.implicitHeight
 
     property string currentTemp: "--"
     property string currentIcon: "󰖐"
     property string currentDesc: "Loading..."
     property var hourlyForecast: []
+    property bool isFetching: false
 
-    Component.onCompleted: fetchWeather()
+    property var activeXhr: null
+
+    pollInterval: 1800000
+    onPollAction: fetchWeather()
 
     function fetchWeather() {
-        var xhr = new XMLHttpRequest();
+        if (root.isFetching)
+            return;
+        root.isFetching = true;
+
+        root.activeXhr = new XMLHttpRequest();
         var url = `https://api.open-meteo.com/v1/forecast?latitude=${Config.weatherLat}&longitude=${Config.weatherLon}&current=temperature_2m,weather_code&hourly=temperature_2m,precipitation_probability,weather_code&timezone=${Config.weatherTz}&forecast_days=2`;
 
-        xhr.open("GET", url);
-        xhr.onreadystatechange = () => {
-            if (xhr.readyState !== XMLHttpRequest.DONE)
+        root.activeXhr.open("GET", url);
+        root.activeXhr.onreadystatechange = () => {
+            if (!root.activeXhr || root.activeXhr.readyState !== XMLHttpRequest.DONE)
                 return;
 
-            if (xhr.status !== 200) {
-                console.error("Failed to fetch weather:", xhr.status);
+            root.isFetching = false;
+            if (root.activeXhr.status === 0) {
+                console.warn("Weather fetch failed (Code 0), retrying later.");
+                root.activeXhr = null;
+                retryTimer.start();
+                return;
+            }
+
+            if (root.activeXhr.status !== 200) {
+                console.error("Failed to fetch weather:", root.activeXhr.status);
+                root.activeXhr = null;
                 return;
             }
 
             try {
-                parseWeatherData(JSON.parse(xhr.responseText));
+                parseWeatherData(JSON.parse(root.activeXhr.responseText));
             } catch (e) {
                 console.error("Weather parsing error:", e);
             }
+            root.activeXhr = null;
         };
-        xhr.send();
+        root.activeXhr.send();
     }
 
     function parseWeatherData(data) {
@@ -136,90 +150,12 @@ Item {
     }
 
     Timer {
-        interval: 180000
-        running: root.Window.window
-        repeat: true
+        id: retryTimer
+        interval: 5000
+        repeat: false
         onTriggered: {
-            console.log("test of weather pulling");
-            root.fetchWeather();
-        }
-    }
-
-    ColumnLayout {
-        id: content
-        anchors.fill: parent
-        spacing: 20
-
-        RowLayout {
-            Layout.fillWidth: true
-            spacing: 15
-
-            NerdIcon {
-                icon: root.currentIcon
-                Layout.alignment: Qt.AlignVCenter
-                size: 40
-            }
-
-            ColumnLayout {
-                Layout.fillWidth: true
-                spacing: 2
-
-                StyledText {
-                    text: root.currentTemp
-                    font.pixelSize: 20
-                    font.bold: true
-                }
-
-                StyledText {
-                    text: root.currentDesc
-                    color: Theme.muted
-                    font.pixelSize: 12
-                }
-            }
-        }
-
-        ListView {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 85
-            orientation: ListView.Horizontal
-            spacing: 15
-            clip: true
-
-            interactive: true
-            boundsBehavior: Flickable.StopAtBounds
-
-            model: root.hourlyForecast
-
-            delegate: ColumnLayout {
-                width: 45
-                spacing: 6
-
-                StyledText {
-                    text: modelData.time
-                    Layout.alignment: Qt.AlignHCenter
-                    color: index === 0 ? Theme.primary : Theme.muted
-                    font.pixelSize: 11
-                }
-
-                NerdIcon {
-                    icon: modelData.icon
-                    Layout.alignment: Qt.AlignHCenter
-                    size: 18
-                }
-
-                StyledText {
-                    text: modelData.temp
-                    Layout.alignment: Qt.AlignHCenter
-                    Layout.leftMargin: 4
-                    font.bold: true
-                }
-
-                StyledText {
-                    text: modelData.precip
-                    Layout.alignment: Qt.AlignHCenter
-                    font.pixelSize: 10
-                    color: modelData.precip !== "" ? "#89b4fa" : "transparent"
-                }
+            if (root.listeners > 0) {
+                root.fetchWeather();
             }
         }
     }

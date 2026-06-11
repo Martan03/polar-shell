@@ -4,6 +4,6 @@ import "../Components"
 
 IconItem {
     icon: "󰢮"
-    text: SystemMonitor.gpu + "%"
-    visible: SystemMonitor.gpu >= 0
+    text: SysMonitor.gpu + "%"
+    visible: SysMonitor.gpu >= 0
 }

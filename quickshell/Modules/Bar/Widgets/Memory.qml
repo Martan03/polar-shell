@@ -4,6 +4,6 @@ import "../Components"
 
 IconItem {
     icon: " "
-    text: SystemMonitor.mem + "%"
-    visible: SystemMonitor.mem >= 0
+    text: SysMonitor.mem + "%"
+    visible: SysMonitor.mem >= 0
 }

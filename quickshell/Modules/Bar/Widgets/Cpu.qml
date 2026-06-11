@@ -4,6 +4,6 @@ import "../Components"
 
 IconItem {
     icon: ""
-    text: SystemMonitor.cpu + "%"
-    visible: SystemMonitor.cpu >= 0
+    text: SysMonitor.cpu + "%"
+    visible: SysMonitor.cpu >= 0
 }

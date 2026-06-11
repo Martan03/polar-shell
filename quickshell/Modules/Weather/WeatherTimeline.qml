@@ -183,7 +183,7 @@ Item {
 
             Rectangle {
                 anchors.fill: parent
-                radius: 12
+                radius: 8
                 color: index === 0 ? Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.15) : "transparent"
                 border.color: index === 0 ? Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.3) : "transparent"
                 border.width: 1

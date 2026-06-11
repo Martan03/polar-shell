@@ -9,6 +9,7 @@ import ".."
 import "../ControlCenter"
 import "../Calendar"
 import "../Weather"
+import "../SystemMonitor"
 
 Scope {
     id: bar
@@ -135,6 +136,17 @@ Scope {
                 anchors.verticalCenter: parent.verticalCenter
 
                 BarPill {
+                    id: sysPill
+                    interactive: true
+                    onClicked: sysPopup.visible = !sysPopup.visible
+
+                    SysPopup {
+                        id: sysPopup
+                        visible: false
+                        anchor.item: sysPill
+                        anchor.rect.x: (sysPill.width - width) / 2
+                    }
+
                     Cpu {}
                     Memory {}
                     Gpu {}

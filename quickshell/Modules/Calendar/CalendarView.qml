@@ -40,7 +40,8 @@ Item {
         let endStr = formatKeyDate(end);
 
         fetchProcess.running = false;
-        fetchProcess.command = ["python3", Qt.resolvedUrl("../../../scripts/cal_events.py").toString().replace("file://", ""), startStr, endStr];
+        fetchProcess.command = ["python3", Qt.resolvedUrl("../../scripts/cal_events.py").toString().replace("file://", ""), startStr, endStr];
+        console.log(fetchProcess.command);
         fetchProcess.running = true;
     }
 

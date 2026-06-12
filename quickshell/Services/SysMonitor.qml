@@ -14,6 +14,7 @@ Singleton {
     property var memHistory: []
     property var gpuHistory: []
 
+    property bool fetchApps: false
     property var cpuApps: []
     property var memApps: []
     property var gpuApps: []
@@ -92,7 +93,7 @@ Singleton {
 
     Process {
         id: cpuProc
-        command: ["bash", "-c", "top -b -n1 | awk '/%Cpu/ {print 100 - $8}'; ps -eo comm,%cpu --sort=-%cpu | head -n 6 | tail -n +2"]
+        command: ["bash", "-c", root.fetchApps ? "top -b -n1 | awk '/%Cpu/ {print 100 - $8}'; ps -eo comm,%cpu --sort=-%cpu | head -n 6 | tail -n +2 | awk -v c=$(nproc) 'NF>1 { $NF = sprintf(\"%.1f\", $NF/c); print $0 }'" : "top -b -n1 | awk '/%Cpu/ {print 100 - $8}'"]
         stdout: StdioCollector {
             onStreamFinished: root.handleStream("cpu", this.text)
         }
@@ -100,7 +101,7 @@ Singleton {
 
     Process {
         id: memProc
-        command: ["bash", "-c", "free | awk '/^Mem/ {printf \"%.0f\\n\", $3/$2 * 100}'; ps -eo comm,%mem --sort=-%mem | head -n 6 | tail -n +2"]
+        command: ["bash", "-c", root.fetchApps ? "free | awk '/^Mem/ {printf \"%.0f\\n\", $3/$2 * 100}'; ps -eo comm,%mem --sort=-%mem | head -n 6 | tail -n +2" : "free | awk '/^Mem/ {printf \"%.0f\\n\", $3/$2 * 100}'"]
         stdout: StdioCollector {
             onStreamFinished: root.handleStream("mem", this.text)
         }

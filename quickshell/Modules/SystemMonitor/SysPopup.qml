@@ -1,12 +1,15 @@
 import QtQuick
 import QtQuick.Layouts
 import "../../Widgets"
+import "../../Services"
 
 Popup {
     id: root
 
     implicitWidth: 260
     implicitHeight: contentLayout.implicitHeight + 40
+
+    onVisibleChanged: SysMonitor.fetchApps = root.visible
 
     ColumnLayout {
         id: contentLayout

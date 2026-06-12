@@ -107,7 +107,7 @@ Item {
 
                 root.maxTempLabel = Math.round(maxT) + "°";
                 root.minTempLabel = Math.round(minT) + "°";
-                root.maxPrecipLabel = maxP > 0.1 ? maxP.toFixed(1) + " mm" : "";
+                root.maxPrecipLabel = maxP > 0.05 ? maxP.toFixed(1) + " mm" : "";
 
                 var itemW = 58;
                 var spacing = 5;

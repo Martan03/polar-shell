@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import QtQuick.Controls
 import "../../Widgets"
 import "../../Services"
 
@@ -180,6 +181,17 @@ Item {
         delegate: Item {
             width: 58
             height: 150
+
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                preventStealing: false
+                propagateComposedEvents: true
+
+                ToolTip.visible: containsMouse && ToolTip.text !== ""
+                ToolTip.delay: 200
+                ToolTip.text: modelData.precipMm > 0 ? `Rain: ${modelData.precipMm.toFixed(1)}mm` : ""
+            }
 
             Rectangle {
                 anchors.fill: parent

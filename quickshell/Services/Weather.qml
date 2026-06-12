@@ -79,11 +79,7 @@ SmartPoller {
             }
         }
 
-        for (let i = 0; i < 12; i++) {
-            let id = startId + i;
-            if (id >= data.hourly.time.length)
-                continue;
-
+        for (let id = startId; id < data.hourly.time.length; id++) {
             const timeObj = new Date(data.hourly.time[id]);
             const timeStr = String(timeObj.getHours()).padStart(2, '0') + ":00";
 
@@ -91,7 +87,7 @@ SmartPoller {
             const precip = data.hourly.precipitation_probability[id];
 
             forecast.push({
-                time: i === 0 ? "Now" : timeStr,
+                time: id === startId ? "Now" : timeStr,
                 temp: data.hourly.temperature_2m[id],
                 precip: precip > 0 ? precip + "%" : "",
                 precipMm: data.hourly.precipitation[id],

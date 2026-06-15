@@ -6,12 +6,14 @@ Popup {
     id: root
 
     implicitWidth: 350
-    implicitHeight: content.implicitHeight + 40
+    implicitHeight: content.implicitHeight + 40 + popupGap
 
     ColumnLayout {
         id: content
 
-        anchors.fill: parent
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
         anchors.margins: 20
         spacing: 20
 

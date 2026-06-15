@@ -6,7 +6,7 @@ Popup {
     id: root
 
     implicitWidth: 400
-    implicitHeight: content.implicitHeight + 40
+    implicitHeight: content.implicitHeight + 40 + popupGap
 
     ColumnLayout {
         id: content

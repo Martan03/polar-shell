@@ -10,7 +10,7 @@ Popup {
 
     anchorEdges: Qt.RightEdge | Qt.BottomEdge
     implicitWidth: 325
-    implicitHeight: content.implicitHeight + 40
+    implicitHeight: content.implicitHeight + 40 + popupGap
 
     ColumnLayout {
         id: content

@@ -7,7 +7,7 @@ Popup {
     id: root
 
     implicitWidth: 260
-    implicitHeight: contentLayout.implicitHeight + 40
+    implicitHeight: contentLayout.implicitHeight + 40 + popupGap
 
     onVisibleChanged: SysMonitor.fetchApps = root.visible
 

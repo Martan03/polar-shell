@@ -63,7 +63,7 @@ Scope {
                     id: mediaPill
                     interactive: true
                     leftMargin: 6
-                    onClicked: mediaPopup.visible = !mediaPopup.visible
+                    onClicked: mediaPopup.toggle()
 
                     MediaPopup {
                         id: mediaPopup
@@ -101,14 +101,15 @@ Scope {
                 BarPill {
                     id: weatherPill
                     interactive: true
-                    onClicked: weatherPopup.visible = !weatherPopup.visible
-                    // visible: Weather.currentTemp !== "--"
+                    onClicked: weatherPopup.toggle()
+                    visible: Weather.currentTemp !== "--"
 
                     WeatherPopup {
                         id: weatherPopup
                         visible: false
                         anchor.item: weatherPill
-                        anchor.rect.x: (weatherPill.width - width) / 2
+                        anchor.rect.x: (weatherPill.width - implicitWidth) / 2
+                        anchor.rect.y: weatherPill.height
                     }
 
                     WeatherWidget {}
@@ -117,13 +118,14 @@ Scope {
                 BarPill {
                     id: centerPill
                     interactive: true
-                    onClicked: calendarPopup.visible = !calendarPopup.visible
+                    onClicked: calendarPopup.toggle()
 
                     CalendarPopup {
                         id: calendarPopup
                         visible: false
                         anchor.item: centerPill
-                        anchor.rect.x: (centerPill.width - width) / 2
+                        anchor.rect.x: (centerPill.width - implicitWidth) / 2
+                        anchor.rect.y: centerPill.height
                     }
 
                     Clock {}
@@ -138,13 +140,14 @@ Scope {
                 BarPill {
                     id: sysPill
                     interactive: true
-                    onClicked: sysPopup.visible = !sysPopup.visible
+                    onClicked: sysPopup.toggle()
 
                     SysPopup {
                         id: sysPopup
                         visible: false
                         anchor.item: sysPill
-                        anchor.rect.x: (sysPill.width - width) / 2
+                        anchor.rect.x: (sysPill.width - implicitWidth) / 2
+                        anchor.rect.y: sysPill.height
                     }
 
                     Cpu {}
@@ -155,7 +158,7 @@ Scope {
                 BarPill {
                     id: trayPill
                     interactive: true
-                    onClicked: controlCenter.visible = !controlCenter.visible
+                    onClicked: controlCenter.toggle()
 
                     ControlCenter {
                         id: controlCenter

@@ -26,6 +26,7 @@ everything work as intended:
 - **Capture service:** `wf-recorder`, `ffmpeg`, `jq`
 - **Calendar:** `gcalcli` (Requires Google OAuth configuration)
 - **Brightness control:** `ddcutil`
+- **Widgets:** `ddcutil`, `hyprpicker`
 
 ## Installation
 
@@ -41,8 +42,7 @@ everything work as intended:
     ```
 3. Authenticate Google Calendar (Optional, for the Calendar widget):
 
-    > [!NOTE]
-    > Follow the instructions to setup OAuth
+    > Follow the `gcalcli` instructions to setup OAuth.
 
     ```bash
     gcalcli agenda

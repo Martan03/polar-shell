@@ -80,6 +80,12 @@ elif [ "$ACTION" = "stop" ]; then
     fi
 
     hyprctl reload
+elif [ "$ACTION" = "running" ]; then
+    if [ -f "$PID_FILE" ]; then
+        echo "true"
+    else
+        echo "false"
+    fi
 elif [[ "$ACTION" = "-h" || "$ACTION" = "--help" ]]; then
     print_help
 else

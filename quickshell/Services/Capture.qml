@@ -45,13 +45,13 @@ Item {
             cmd.push("-d", root.countdown);
         }
 
-        root.captureState = root.stateStarting
+        root.captureState = root.stateStarting;
         startProcess.command = cmd;
         startProcess.running = true;
     }
 
     function stop() {
-        root.captureState = root.stateStopping
+        root.captureState = root.stateStopping;
         stopProcess.running = true;
     }
 
@@ -59,7 +59,7 @@ Item {
         id: startProcess
         onExited: (code, status) => {
             if (code === 0) {
-                root.captureState = root.stateRecording
+                root.captureState = root.stateRecording;
             } else {
                 console.error(`Start Capture Error: ${code} - ${status}`);
                 root.captureState = root.stateIdle;
@@ -71,10 +71,26 @@ Item {
         id: stopProcess
         command: ["bash", root.scriptPath, "stop"]
         onExited: (code, status) => {
-            root.captureState = root.stateIdle
+            root.captureState = root.stateIdle;
             if (code !== 0) {
                 console.error(`Stop Capture Error: ${code} - ${status}`);
             }
         }
+    }
+
+    Process {
+        id: checkRunning
+        command: ["bash", root.scriptPath, "running"]
+        stdout: StdioCollector {
+            onStreamFinished: {
+                if (this.text.trim() === "true") {
+                    root.captureState = root.stateRecording;
+                }
+            }
+        }
+    }
+
+    Component.onCompleted: {
+        checkRunning.running = true;
     }
 }

@@ -22,4 +22,12 @@ ShellRoot {
             GlobalState.powerMenuVisible = !GlobalState.powerMenuVisible;
         }
     }
+
+    Connections {
+        target: Quickshell
+
+        function onReloadCompleted() {
+            Quickshell.inhibitReloadPopup();
+        }
+    }
 }

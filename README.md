@@ -15,6 +15,7 @@ https://github.com/user-attachments/assets/d92dfe3f-ec85-40c0-98b7-2754c2c8589f
 - [Usage](#usage)
     - [Hyprland Keybinds (IPC)](#hyprland-keybinds-ipc)
 - [Detailed description](#detailed-description)
+    - [Dynamic theme](#dynamic-theme)
 - [Links](#links)
 
 ## Dependencies
@@ -87,6 +88,17 @@ power of QML and build my own solution. My focus for `polar-shell` is:
 `polar-shell` will constantly evolve based on my needs. My plan is to create
 quickshell alternatives for other programs I use, such as `rofi` for creating
 custom menus - currently I use it for wallpaper picker and clipboard history.
+
+### Dynamic theme
+
+To change the theme colors, you can edit
+`quickshell/Services/GecolColors.qml` file to have custom colors. Personally
+I use [`gecol`](https://github.com/Martan03/gecol) for this (created by me).
+You can consider setting it up in order to have the same dynamic colors based
+wallpaper.
+
+You can checkout my [dotfiles](https://github.com/Martan03/dotfiles), where
+I have the [`gecol`](https://github.com/Martan03/gecol) configuration.
 
 ## Links
 

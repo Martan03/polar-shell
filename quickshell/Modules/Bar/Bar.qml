@@ -36,7 +36,7 @@ Scope {
                 right: true
             }
 
-            implicitHeight: 30
+            implicitHeight: 33
 
             margins {
                 right: 5

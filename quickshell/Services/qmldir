@@ -1,5 +1,4 @@
 singleton Audio 1.0 Audio.qml
-singleton Battery 1.0 Battery.qml
 singleton Bluetooth 1.0 Bluetooth.qml
 singleton Capture 1.0 Capture.qml
 singleton Config 1.0 Config.qml
@@ -8,6 +7,7 @@ singleton GlobalState 1.0 GlobalState.qml
 singleton Mako 1.0 Mako.qml
 singleton MprisCtl 1.0 MprisCtl.qml
 singleton Network 1.0 Network.qml
+singleton PowerState 1.0 PowerState.qml
 singleton SysMonitor 1.0 SysMonitor.qml
 singleton Theme 1.0 Theme.qml
 singleton Time 1.0 Time.qml

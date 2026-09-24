@@ -64,6 +64,8 @@ Popup {
             BluetoothToggle {}
         }
 
+        PowerSwitcher {}
+
         RowLayout {
             Layout.fillWidth: true
             spacing: 15

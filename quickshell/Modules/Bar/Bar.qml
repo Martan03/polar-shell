@@ -167,7 +167,7 @@ Scope {
                     }
 
                     Volume {}
-                    BatteryWidget {}
+                    Battery {}
                     SystemTray {}
                 }
             }

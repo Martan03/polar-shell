@@ -5,6 +5,7 @@ import Quickshell.Io
 Item {
     id: root
 
+    property bool hasBattery: false
     property int capacity: 100
     property string status: "Unknown"
     property string profile: "balanced"
@@ -32,15 +33,32 @@ Item {
         return charging ? "󰂅" : "󰁹";
     }
 
+    Component.onCompleted: detectHwProcess.running = true
+
     function setProfile(profile) {
-        setProfileProcess.command = ["powerprofilectl", "set", profile];
+        setProfileProcess.command = ["powerprofilesctl", "set", profile];
         setProfileProcess.running = true;
-        root.activeProfile = profile;
+        root.profile = profile;
+    }
+
+    Process {
+        id: detectHwProcess
+        command: ["bash", "-c", "ls /sys/class/power_supply/BAT* >/dev/null 2>&1 && echo 'yes' || echo 'no'"]
+        stdout: StdioCollector {
+            onStreamFinished: {
+                if (this.text.trim() === "yes") {
+                    root.hasBattery = true;
+                    pollTimer.running = true;
+                }
+                profileProcess.running = true;
+            }
+        }
     }
 
     Timer {
+        id: pollTimer
         interval: 10000
-        running: true
+        running: false
         repeat: true
         triggeredOnStart: true
         onTriggered: {

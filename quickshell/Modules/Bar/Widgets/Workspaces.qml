@@ -12,6 +12,7 @@ Item {
 
     property var monitorDefaults: {
         "DP-3": [1, 2, 3],
+        "eDP-1": [1, 2, 3],
         "DVI-D-1": [4, 5, 6]
     }
 
